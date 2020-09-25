@@ -21,7 +21,7 @@ ip xfrm p f
 set_irq_affinity.sh $LOCAL_NIC_PF
 ip link set $LOCAL_NIC_PF up
 
-ssh $REMOTE_SERVER -p 2222 /bin/bash << EOF
+ssh $REMOTE_SERVER /bin/bash << EOF
 	set -x #echo on
 	pkill irqbalance
 	pkill tuned
@@ -41,11 +41,11 @@ REMOTE_ADDR=192.168.$i.65
 
 ip addr add $LOCAL_ADDR/24 dev $LOCAL_NIC_PF
 
-ssh $REMOTE_SERVER -p 2222 /bin/bash << EOF
+ssh $REMOTE_SERVER /bin/bash << EOF
 	set -x #echo on
 	ip addr add $REMOTE_ADDR/24 dev $REMOTE_NIC_PF
 EOF
 #./setup_xfrm.sh -$OPTION -id ${REMOTE_SPI_RX[$(($i-1))]} ${LOCAL_SPI_RX[$(($i-1))]} -a -256 -v $LOCAL_ADDR/24 $LOCAL_NIC_PF $REMOTE_ADDR/24 $REMOTE_NIC_PF $REMOTE_SERVER $LOCAL_ADDR $REMOTE_ADDR
-./setup_xfrm.sh -$FULL -$OPTION -a -256 -v $LOCAL_ADDR/24 $LOCAL_NIC_PF $REMOTE_ADDR/24 $REMOTE_NIC_PF $REMOTE_SERVER $LOCAL_ADDR $REMOTE_ADDR
+./setup_xfrm.sh -$FULL -$OPTION -a -256 -v $LOCAL_ADDR/24 $LOCAL_NIC_PF $REMOTE_ADDR/24 $REMOTE_NIC_PF "$REMOTE_SERVER" $LOCAL_ADDR $REMOTE_ADDR
 done
 

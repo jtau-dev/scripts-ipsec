@@ -6,7 +6,7 @@ PF0=p0
 VF0_REP=pf0hpf
 OUTER_REMOTE_IP=192.168.1.65
 OUTER_LOCAL_IP=192.168.1.64
-REMOTE_SERVER=${1:-10.7.159.36}
+REMOTE_SERVER="${1:-10.7.159.36} -p 2222"
 
 #configuring PF and PF representor
 ifconfig $PF0 $OUTER_LOCAL_IP/24 up
@@ -32,12 +32,11 @@ ovs-vsctl set Open_vSwitch . other_config:hw-offload=true
 service openvswitch restart
 ifconfig ovs-br up
 ovs-vsctl show
-
 OUTER_REMOTE_IP=192.168.1.64
 OUTER_LOCAL_IP=192.168.1.65
 PF0=p0
 VF0_REP=pf0hpf
-ssh $REMOTE_SERVER -p 2222 /bin/bash << EOF
+ssh $REMOTE_SERVER /bin/bash << EOF
 	#configuring PF and PF representor
 	ifconfig $PF0 $OUTER_LOCAL_IP/24 up
 	ifconfig $PF0 up

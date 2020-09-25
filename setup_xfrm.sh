@@ -61,7 +61,7 @@ if (( $OFFLOAD >= 1 )) && \
 fi
 
 if [ $OFFLOAD == 2 ] && \
-   ! ssh $REMOTE -p 2222 "sudo /bin/bash -c 'ip xfrm st help'" 2>&1 | grep -q offload; then
+   ! ssh $REMOTE "sudo /bin/bash -c 'ip xfrm st help'" 2>&1 | grep -q offload; then
 	echo "iproute2 installed on \"$REMOTE\" doesn't support offload. Please update."
 	exit 1
 fi
@@ -122,7 +122,7 @@ sudo ip xfrm policy add src $REMOTENET dst $LOCALNET dir in tmpl src $DST dst $S
 sudo ip xfrm policy add src $REMOTENET dst $LOCALNET dir fwd tmpl src $DST dst $SRC proto esp reqid $ID_OUT mode transport
 
 #ssh $REMOTE /bin/bash << EOF
-ssh -A -t root@$REMOTE -p 2222 /bin/bash << EOF
+ssh -A -t root@$REMOTE /bin/bash << EOF
 	[ $VERBOSE == 1 ] && set -x
 	set -e
 	if [ $FLUSH == 1 ]; then
